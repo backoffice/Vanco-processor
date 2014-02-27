@@ -5,7 +5,7 @@ require_once 'CRM/Core/Config.php';
 class bin_vancoInstall{
     function __construct( ) {
         require_once 'CRM/Utils/System.php';
-        CRM_Utils_System::loadBootStrap(  );
+//        CRM_Utils_System::loadBootStrap(  );
         $config = CRM_Core_Config::singleton();
         require_once 'CRM/Core/DAO.php';
         $data = array( );
@@ -18,7 +18,9 @@ class bin_vancoInstall{
         $customPhp = rtrim( $customPhp,"/");
         $customTpl = rtrim( $customTpl,"/");
         $customExt = rtrim( $customExt,"/");
-        
+		$configPath = explode( 'sites', $config->configAndLogDir );
+		$modulePath = $configPath[0]."sites/all/modules/civicrm/drupal/modules/vanco_payment";
+
         //Check if no custom folders are defined display error with a link to the civi page to set the paths.
         if ( !$customPhp || !$customTpl || !$customExt ) {
             $url   = CRM_Utils_System::href( 'here', "civicrm/admin/setting/path", "reset=1" );
@@ -32,7 +34,7 @@ class bin_vancoInstall{
         }
         
         //Copying Vanco module to civicrm
-        $data = $this->recurse_copy( $customExt."/vanco.directpayment.processor/drupal/modules/vanco_payment", "sites/all/modules/civicrm/drupal/modules/vanco_payment", $data);
+        $data = $this->recurse_copy( $customExt."/vanco.directpayment.processor/drupal/modules/vanco_payment", $modulePath, $data);
         
         //Check if custom files already exist then display an error
         if (  $data['error'] ) {

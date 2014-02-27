@@ -15,9 +15,9 @@ class VancoPaymentService
         //Code for setting the variable containing path of custom
         //extension directory
         require_once 'CRM/Utils/System.php';
-        CRM_Utils_System::loadBootStrap(  );
+     
         $config = CRM_Core_Config::singleton();
-        $customExt = $config->extensionsDir;
+        $customExt = $config->extensionsDir;		
         $this->customExt = rtrim( $customExt,"/");
         //
 
@@ -70,6 +70,7 @@ class VancoPaymentService
 			$ReqHeader .= "Connection: close\n\n"; 
 			$ReqHeader .= $xml . "\n\n";
 			fwrite($socket, $ReqHeader); 
+			$response = '';
 			while (!feof($socket))
 			{ 
 				$response .= fgets($socket, 4096);
@@ -172,32 +173,33 @@ class VancoPaymentService
                 $result['desc']  = 'Either not logged-in or invalid session ID parameter ';
                 return $result;
             }
-        $xml_obj   = simplexml_load_file("$this->customExt/vanco.directpayment.processor/packages/Vanco/xml/transaction.xml");      
+        $xml_obj   = simplexml_load_file("$this->customExt/vanco.directpayment.processor/packages/Vanco/xml/transaction.xml");
         
 		$xml_obj->Auth->RequestTime 	=  date('Y-m-d H:m:s');
 		$xml_obj->Auth->SessionID 		= $this->_sessionID;
-        if( $params['CardBillingCountryCode'] ) {
-            $xml_obj->Request->RequestVars->addChild('CardBillingCountryCode');
-        }     
-
+    
 		foreach( $params as $field => $value )
-            {
+            {			
                 $xml_obj->Request->RequestVars->$field = $value;
             }
-
+			//exit;
         if(!$this->offline)
             {
-				$response_obj = $this->_ProcessRequest($xml_obj);
-                         
+				$response_obj = $this->_ProcessRequest($xml_obj);    
 				$errors = (array)$response_obj->Response->Errors->Error;
-				
 				//Added code to handle Invalid start date and increase the day by 1
-                $errdes = $response_obj->Response->Errors->Error->ErrorDescription; //error description
-                $flagerror = false;
-                if($errdes == 'Invalid Start Date')
+				
+				$errdes = @$response_obj->Response->Errors->Error->ErrorDescription; //error description
+								
+				$flagerror = false;
+                if( $errdes == 'Invalid Start Date' )
                     {  //increment of date by one day 
-                        $xml_obj->Request->RequestVars->StartDate = date("Y-m-d",strtotime('1 day'));
-                        $xml_obj->Request->RequestVars->EndDate   = date("Y-m-d",strtotime('5 day'));
+                        $xml_obj->Request->RequestVars->StartDate = date("Y-m-d",strtotime($xml_obj->Request->RequestVars->StartDate .'+ 1 day'));
+                        if ( $xml_obj->Request->RequestVars->EndDate != '' ) {
+							$xml_obj->Request->RequestVars->EndDate   = date("Y-m-d",strtotime($xml_obj->Request->RequestVars->EndDate .'+ 1 day'));
+						} else {
+							$xml_obj->Request->RequestVars->EndDate   = '';
+						}
                         //re-submission of data 
                         $response_obj = $this->_ProcessRequest($xml_obj); 
                         $flagerror = 'true';
@@ -611,9 +613,10 @@ class VancoPaymentService
 	{
         require_once 'CRM/Core/DAO.php';
         $fileName  = $this->customExt."/vanco.directpayment.processor/packages/Vanco/log/vanco_log_";
-        
-        $xmlObject = simplexml_load_string( $xml );
-        if( (string)$xmlObject->Request->RequestVars->AccountNumber ) {
+        if ($xml ) {
+			$xmlObject = simplexml_load_string( $xml );
+		}
+        if( (string)@$xmlObject->Request->RequestVars->AccountNumber ) {
             $xmlObject->Request->RequestVars->AccountNumber = CRM_Utils_System::mungeCreditCard( (string)$xmlObject->Request->RequestVars->AccountNumber );
             $xmlObject->Request->RequestVars->CardCVV2 = '';
 

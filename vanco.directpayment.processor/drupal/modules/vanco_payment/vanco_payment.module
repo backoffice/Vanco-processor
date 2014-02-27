@@ -1,9 +1,28 @@
 <?php
 
+function vanco_payment_civicrm_pre( $op, $objectName, $id, &$params ) {
+	if( $objectName == 'Contribution' ) {
+		//Get template values
+		$smarty =  CRM_Core_Smarty::singleton( );
+        $values =& $smarty->get_template_vars( );
+		if ( $values['paymentProcessor']['class_name'] == 'vanco.directpayment.processor') {
+			if ( is_numeric( $values['payment_method'] ) ) {
+				$params['payment_instrument_id'] = $values['payment_method'];
+			} else {
+				require_once "CRM/Contribute/PseudoConstant.php";
+				$paymentInstrument = CRM_Contribute_PseudoConstant::paymentInstrument();
+				$params['payment_instrument_id'] = array_search( $values['payment_method'], $paymentInstrument );
+			}
+		}
+	}
+}
+
 function vanco_payment_civicrm_buildForm($formName, &$form ) {   
     //Buildform customization for vanco
-    if ( $form->_paymentProcessor['class_name'] == 'vanco.directpayment.processor' || ( $formName == 'CRM_Contribute_Form_Contribution' && $form->_mode ) ) {
-        if ( $formName == 'CRM_Contribute_Form_Contribution_Main' || $formName == 'CRM_Event_Form_Registration_Register' || $formName == 'CRM_Contribute_Form_Contribution' ) {
+    if ( $form->_paymentProcessor['class_name'] == 'vanco.directpayment.processor' 
+		|| ( $formName == 'CRM_Contribute_Form_Contribution' && $form->_mode ) 
+		|| ( $formName == 'CRM_Event_Form_Participant' && $form->_mode == 'live') ) {
+        if ( $formName == 'CRM_Event_Form_Participant' || $formName == 'CRM_Contribute_Form_Contribution_Main' || $formName == 'CRM_Event_Form_Registration_Register' || $formName == 'CRM_Contribute_Form_Contribution' ) {
             require_once 'CRM/Contribute/PseudoConstant.php';
 
             $paymentMethods = CRM_Contribute_PseudoConstant::paymentInstrument();
@@ -27,14 +46,18 @@ function vanco_payment_civicrm_buildForm($formName, &$form ) {
                                           'savings' => ts('Savings') ), TRUE ); 
         } 
         elseif ( $formName == 'CRM_Contribute_Form_Contribution_Confirm' || $formName == 'CRM_Event_Form_Registration_Confirm' || $formName == 'CRM_Contribute_Form_Contribution_ThankYou') {
-            $params = $form->get( 'params' );
+            if( $formName == 'CRM_Event_Form_Registration_Confirm' ) {
+				$params = $form->getVar('_params');
+			} else { 
+				$params = $form->_params;
+			}
             if ( is_array($params[0]) ) {
                 $params = $params[0];
-            }
+            }			
             require_once 'CRM/Contribute/PseudoConstant.php';
             require_once 'CRM/Utils/System.php';
             $paymentMethods = CRM_Contribute_PseudoConstant::paymentInstrument();
-            
+			
             if ( CRM_Utils_Array::value( 'payment_method', $params ) ) {
                 $form->assign( 'payment_method', $paymentMethods[$params['payment_method']]);
             }
@@ -49,7 +72,7 @@ function vanco_payment_civicrm_buildForm($formName, &$form ) {
                     $form->assign( 'account_type', $params['account_type']);
                 }
             }
-        }
+	    }
     } else if ( $formName == 'CRM_Contribute_Form_ContributionPage_Amount' ) {
         $processorClass = getProcessorClass( $form->getVar('_id') );
         $form->addElement( 'checkbox', 'is_recur', ts('Recurring contributions'), null, 
@@ -112,9 +135,21 @@ function vanco_payment_civicrm_validate( $formName, &$fields, &$files, &$form ){
     }
     require_once 'CRM/Contribute/PseudoConstant.php';
     $paymentMethods = CRM_Contribute_PseudoConstant::paymentInstrument();
-    //overide validation for CC or ACH details
-    if ( $formName == 'CRM_Contribute_Form_Contribution_Main' || $formName == 'CRM_Event_Form_Registration_Register' || $formName == 'CRM_Contribute_Form_Contribution' ) {
-        if ( $formName == 'CRM_Contribute_Form_Contribution_Main' && $fields['is_recur'] == 0 ){ 
+    //override validation for CC or ACH details
+    if ( $formName == 'CRM_Event_Form_Participant' || $formName == 'CRM_Contribute_Form_Contribution_Main' || $formName == 'CRM_Event_Form_Registration_Register' || $formName == 'CRM_Contribute_Form_Contribution' ) {
+	   //Modified by BOT -7th Nov, 2012
+	   //To unset validation errors when pay later is selected
+		if ( ($formName == "CRM_Contribute_Form_Contribution_Main" || $formName == 'CRM_Event_Form_Registration_Register' ) && $fields['is_pay_later'] == 1 ) {
+			unset($form->_errors['cvv2']);
+			unset($form->_errors['payment_method']);
+			unset($form->_errors['credit_card_number']);
+			unset($form->_errors['credit_card_exp_date']);
+			unset($form->_errors['credit_card_type']);
+			unset($form->_errors['routing_number']);
+			unset($form->_errors['account_number']);
+		}      
+
+	  if ( $formName == 'CRM_Contribute_Form_Contribution_Main' && $fields['is_recur'] == 0 ){ 
             require_once "CRM/Utils/Rule.php";
            
             if ( !empty($fields['amount_other'])) {
@@ -134,12 +169,16 @@ function vanco_payment_civicrm_validate( $formName, &$fields, &$files, &$form ){
             unset($form->_errors['cvv2']);
             unset($form->_errors['credit_card_exp_date']);
             unset($form->_errors['credit_card_type']);
-            if ( !$fields['routing_number'] ) {
-                $form->_errors['routing_number'] = "Routing number field is required";
-            }
-            if ( !$fields['account_number'] ) {
-                $form->_errors['account_number'] = "Account number field is required";
-            }
+			//Modified by BOT -7th Nov, 2012
+			//Add these errors only if pay later is not selected
+			if( !$fields['is_pay_later'] ) {
+				if ( !$fields['routing_number'] ) {
+					$form->_errors['routing_number'] = "Routing number field is required";
+				}
+				if ( !$fields['account_number'] ) {
+					$form->_errors['account_number'] = "Account number field is required";
+				}
+			}
         }
      }
 }
@@ -170,7 +209,7 @@ function vanco_payment_civicrm_tokenValues( &$values, &$contactIDs ) {
 function getProcessorClass( $pageId ){
     $sql = "SELECT pp.class_name 
     FROM `civicrm_contribution_page` cp, civicrm_payment_processor pp 
-    where cp.payment_processor_id = pp.id and cp.id={$pageId}";
+    where cp.payment_processor = pp.id and cp.id={$pageId}";
     $processorClass =& CRM_Core_DAO::singleValueQuery( $sql );
     return $processorClass;
 }

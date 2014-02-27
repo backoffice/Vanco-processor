@@ -1,8 +1,8 @@
 {*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.1                                                |
+ | CiviCRM version 4.2                                                |
  +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2011                                |
+ | Copyright CiviCRM LLC (c) 2004-2012                                |
  +--------------------------------------------------------------------+
  | This file is a part of CiviCRM.                                    |
  |                                                                    |
@@ -108,9 +108,9 @@
             </div>
             {if $lineItem}
                 {include file="CRM/Price/Page/LineItem.tpl" context="Event"}
-            {elseif $amount || $amount == 0}
+            {elseif $amounts || $amount == 0}
 			    <div class="crm-section no-label amount-item-section">
-                    {foreach from= $amount item=amount key=level}  
+                    {foreach from= $amounts item=amount key=level}  
     					<div class="content">
     					    {$amount.amount|crmMoney}&nbsp;&nbsp;{$amount.label}
     					</div>
@@ -132,16 +132,6 @@
         </div>
     {/if}
 	
-    <div class="crm-group registered_email-group">
-        <div class="header-dark">
-        	{ts}Registered Email{/ts}
-        </div>
-        <div class="crm-section no-label registered_email-section">
-            <div class="content">{$email}</div>
-		    <div class="clear"></div>
-		</div>
-    </div>
-    
     {if $event.participant_role neq 'Attendee' and $defaultRole}
         <div class="crm-group participant_role-group">
             <div class="header-dark">
@@ -174,10 +164,10 @@
         {foreach from=$addParticipantProfile item=participant key=participantNo}
             <div class="crm-group participant_info-group">
                 <div class="header-dark">
-                    {ts 1=$participantNo+1}Participant Information - Participant %1{/ts}	
+                    {ts 1=$participantNo+1}Participant %1{/ts}	
                 </div>
                 {if $participant.additionalCustomPre}
-                    <fieldset class="label-left"><div class="header-dark">{$participant.additionalCustomPreGroupTitle}</div>
+                    <fieldset class="label-left no-border"><div class="bold crm-additional-profile-view-title">{$participant.additionalCustomPreGroupTitle}</div>
                         {foreach from=$participant.additionalCustomPre item=value key=field}
                             <div class="crm-section {$field}-section">
                                 <div class="label">{$field}</div>
@@ -189,8 +179,8 @@
                 {/if}
 
                 {if $participant.additionalCustomPost}
-		{foreach from=$participant.additionalCustomPost item=value key=field}
-                 <fieldset class="label-left"><div class="header-dark">{$participant.additionalCustomPostGroupTitle.$field.groupTitle}</div>
+		            {foreach from=$participant.additionalCustomPost item=value key=field}
+                        <fieldset class="label-left no-border"><div class="bold crm-additional-profile-view-title">{$participant.additionalCustomPostGroupTitle.$field.groupTitle}</div>
                         {foreach from=$participant.additionalCustomPost.$field item=value key=field}
                             <div class="crm-section {$field}-section">
                                 <div class="label">{$field}</div>
@@ -198,9 +188,8 @@
                                 <div class="clear"></div>
                             </div>
                         {/foreach}		 
-		{/foreach}		
-
-                    </fieldset>
+                        </fieldset>
+		            {/foreach}
                 {/if}
             </div>
         <div class="spacer"></div>
@@ -222,18 +211,31 @@
         	</div>
     	</div>
     {/if}
-    
-    {if $contributeMode eq 'direct' and ! $is_pay_later and !$isAmountzero and !$isOnWaitlist and !$isRequireApproval}
+    {* Modified for Vanco *}
+  {if $contributeMode eq 'direct' and ! $is_pay_later and !$isAmountzero and !$isOnWaitlist and !$isRequireApproval}
         <div class="crm-group credit_card-group">
             <div class="header-dark">
+	    	{if $payment_method eq 'ACH'}
+				{ts}Account Information{/ts}
+			{else}
                 {ts}Credit Card Information{/ts}
+			{/if}
             </div>
-            <div class="crm-section no-label credit_card_details-section">
-                <div class="content">{$credit_card_type}</div>
+            <!-- modified for vanco to ACH fields -->
+	    {if $payment_method eq 'ACH'}
+		    <div class="crm-section no-label account_information">
+		    	<div class="content">{ts}Account Type:{/ts} {$account_type}</div>
+		    	<div class="content">{ts}Account Number:{/ts} {$account_number}</div>
+		    	<div class="content">{ts}Routing Number:{/ts} {$routing_number}</div>
+		    </div>
+	    {else}
+		    <div class="crm-section no-label credit_card_details-section">
+                    	<div class="content">{$credit_card_type}</div>
         		<div class="content">{$credit_card_number}</div>
         		<div class="content">{ts}Expires{/ts}: {$credit_card_exp_date|truncate:7:''|crmDate}</div>
         		<div class="clear"></div>
-        	</div>
+        	   </div>
+	   {/if}
         </div>
     {/if}
     

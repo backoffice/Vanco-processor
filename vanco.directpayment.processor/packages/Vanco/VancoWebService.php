@@ -172,19 +172,15 @@ class VancoPaymentService
                 $result['desc']  = 'Either not logged-in or invalid session ID parameter ';
                 return $result;
             }
-        $xml_obj   = simplexml_load_file("$this->customExt/vanco.directpayment.processor/packages/Vanco/xml/transaction.xml");      
+        $xml_obj   = simplexml_load_file("$this->customExt/vanco.directpayment.processor/packages/Vanco/xml/transaction.xml");
         
 		$xml_obj->Auth->RequestTime 	=  date('Y-m-d H:m:s');
 		$xml_obj->Auth->SessionID 		= $this->_sessionID;
-        if( $params['CardBillingCountryCode'] ) {
-            $xml_obj->Request->RequestVars->addChild('CardBillingCountryCode');
-        }     
-
+    
 		foreach( $params as $field => $value )
             {
                 $xml_obj->Request->RequestVars->$field = $value;
             }
-
         if(!$this->offline)
             {
 				$response_obj = $this->_ProcessRequest($xml_obj);

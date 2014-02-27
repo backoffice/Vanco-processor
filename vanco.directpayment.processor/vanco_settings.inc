@@ -1,2 +1,3 @@
 <?php
-define('ClientID','UM6447' );
+//Enter client ID
+//define('ClientID','your client id' );

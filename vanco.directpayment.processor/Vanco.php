@@ -164,12 +164,11 @@ class vanco_directpayment_processor extends CRM_Core_Payment {
 		$params['CustomerCity']		= $this->_getParam( 'city' );
 		$params['CustomerState']	= $this->_getParam( 'state_province' );
 		$params['CustomerZip']		= $this->_getParam( 'postal_code' );
-        
+
 		$payment_method = $this->_getParam( 'payment_method' );
 		include_once 'CRM/Contribute/PseudoConstant.php';
 		$account_type='';
 		$paymentMethods = CRM_Contribute_PseudoConstant::paymentInstrument();
-
 		if($paymentMethods[$payment_method] == 'ACH')
 		{
             $params['TransactionTypeCode'] = 'WEB';
@@ -181,43 +180,17 @@ class vanco_directpayment_processor extends CRM_Core_Payment {
 		{
 			$account_type = 'CC';
 		}
-
+		
 		$params['AccountType']	= $account_type;
 		if($account_type== 'CC')
 		{
-            $country                    = $this->_getParam( 'country' );
-            CRM_Core_Error::debug_var( '$country', $country );
 			$params['AccountNumber']	= $this->_getParam('credit_card_number');
 			$params['CardCVV2']			= $this->_getParam('cvv2');
 			$params['CardExpMonth']		= str_pad( $this->_getParam( 'card_expiry_month' ), 2, '0', STR_PAD_LEFT );
 			$params['CardExpYear']		= $this->_getParam('card_expiry_year');	
 			$params['CardBillingName']	= $this->_getParam('billing_first_name')." ".$this->_getParam('billing_middle_name')." ".$this->_getParam('billing_last_name');
 			
-            // If country is Canada
-            if( $country == "CA" ) {
-                $params['SameCCBillingAddrAsCust'] = "NO";
-                $params['CardBillingAddr1']        = $params['CustomerAddress1'];
-                $params['CardBillingCity']         = $params['CustomerCity'];
-                $params['CardBillingState']        = $params['CustomerState'];
-                $params['CardBillingZip']          = $params['CustomerZip'];
-                $params['CardBillingCountryCode']  = $country;
-               
-            } elseif ( $country != "CA" && $country != "US" ){
-                // If country is other than Canada and US
-                $params['SameCCBillingAddrAsCust'] = "NO";
-                unset( $params['CustomerAddress1'] );
-                unset( $params['CustomerState'] );
-                unset( $params['CustomerZip'] );
-                $params['CustomerCity']		        = $this->_getParam('billing_city-5');
-                $params['CardBillingCity']			= $this->_getParam('billing_city-5');
-                $params['CardBillingCountryCode']	= $country;
-                
-                //CRM_Core_DAO::getFieldValue( "CRM_Core_DAO_Country", $this->_getParam('billing_country-5'), 'iso_code', 'id' )
-            } else {                             
-
-                // If country is US
-                $params['SameCCBillingAddrAsCust']		= "YES";
-            }
+			$params['SameCCBillingAddrAsCust']		= "YES";
 			/*
 			$params['CardBillingAddr1']			= $this->_getParam('billing_street_address-5');
 			$params['CardBillingAddr2']			= $this->_getParam('');
@@ -261,12 +234,11 @@ class vanco_directpayment_processor extends CRM_Core_Payment {
                 $vancoFields_holiday['ClientID'] = ClientID;
                 $responseHolidays = $vancoObj->EFTGetFederalHoliday( $sessionVal, $vancoFields_holiday );
                 $vancoHolidays    = $responseHolidays->Holidays;
-               	if ( $vancoHolidays ) { 
-                	foreach( $vancoHolidays->Holiday as $key => $value ) {
-                    		$date = (array) $value;
-                    		$holidayDates[] = $date['HolidayDate'];
-                	}
-		}
+                
+                foreach( $vancoHolidays->Holiday as $key => $value ) {
+                    $date = (array) $value;
+                    $holidayDates[] = $date['HolidayDate'];
+                }
                 
             }
             $dateParam = $this->calculateDates( $paymentMethods[$payment_method], $currentDay, $holidayDates);
@@ -345,39 +317,7 @@ class vanco_directpayment_processor extends CRM_Core_Payment {
         }
         return $details;
     }
-
-    function getPaymentDetails( $SelectParam, $WhereParam, $like = FALSE ) { 
-        if( $SelectParam ){
-            $selectParams = implode( ',', $SelectParam );
-        } else {
-            $selectParams = '*';
-        }
-        $whereParams = "";
-        if( $like ){
-            $operator = ' like ';
-        } else {
-            $operator = ' = ';
-        }
-        foreach( $WhereParam as $whereKey => $whereValue ) {
-            $whereParamsArray[] = $whereKey . $operator."'" . $whereValue ."'";
-        }
-        $whereParams = implode( ' AND ', $whereParamsArray );
-        $sql = "SELECT DISTINCT " . $selectParams ." FROM civicrm_contribution where " . $whereParams .";" ;
-        $Details =& CRM_Core_DAO::executeQuery( $sql );
-        $index = 0;
-        $details = array();
-        while( $Details->fetch() ){
-            if( $SelectParam ){
-                foreach( $SelectParam as $selectKey ) {
-                    $details[$index][$selectKey] = $Details->$selectKey;
-                }
-            } else {
-                $details[$index] = clone $Details;
-            }
-            $index++;
-        }
-        return $details;
-    }    
+    
 //END - CRM_Core_Payment_Vanco CLASS
 }         
 

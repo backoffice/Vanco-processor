@@ -8,10 +8,7 @@ class bin_vancoHistory {
         require_once 'CRM/Utils/System.php';
         require_once 'CRM/Utils/System.php';
         require_once 'CRM/Contribute/BAO/Contribution.php';
-        require_once 'api/v2/Contribution.php';
-		require_once 'CRM/Core/BAO/MessageTemplates.php';
         require_once 'CRM/Core/BAO/UFMatch.php';
-        require_once 'api/v2/Contact.php';
 		require_once "CRM/Core/BAO/Domain.php";
 		$config = CRM_Core_Config::singleton();
         $domainValues = CRM_Core_BAO_Domain::getNameAndEmail( );
@@ -66,7 +63,7 @@ class bin_vancoHistory {
         require_once "CRM/Pledge/BAO/Pledge.php";
         require_once 'CRM/Contribute/BAO/Contribution.php';
         require_once 'CRM/Core/DAO.php';
-        require_once 'api/v2/Contribution.php';
+
         require_once 'CRM/Core/BAO/CustomGroup.php';
 		$successfulTrxns = 0;
 		$failedTrxns = 0;
@@ -77,7 +74,7 @@ class bin_vancoHistory {
 			if ( $key === 'clientid' ) {			
 				continue;
 			}
-		
+
 			$flag = 0;
 			if ( $value['EVENTTYPE'] == 'ACHReturn' ) {
 				$status = 4;
@@ -94,7 +91,7 @@ class bin_vancoHistory {
 					
 			//get data from contribution recur table
 			
-			$select = array('id', 'contact_id', 'amount', 'frequency_unit', 'frequency_interval', 'installments', 'start_date', 'create_date', 'modified_date', 'cancel_date',  'end_date', 'processor_id', 'trxn_id',  'invoice_id', 'contribution_status_id', 'is_test', 'cycle_day', 'next_sched_contribution', 'failure_count', 'failure_retry_date','auto_renew', 'currency', 'payment_processor_id');
+			$select = array('id', 'contact_id', 'amount', 'frequency_unit', 'frequency_interval', 'installments', 'start_date', 'create_date', 'modified_date', 'cancel_date',  'end_date', 'processor_id', 'trxn_id',  'invoice_id', 'contribution_status_id', 'is_test', 'cycle_day', 'failure_count', 'failure_retry_date','auto_renew', 'currency', 'payment_processor_id');
 
 			$config = CRM_Core_Config::singleton();
 			$customExt = $config->extensionsDir;
@@ -142,21 +139,25 @@ class bin_vancoHistory {
 											    'contact_id'              => $ContributionDetails[ $installmentCount - 1 ]->contact_id,
 											    'contribution_status_id'  => $status);
 					
-					$ids = array('contribution' => $ContributionDetails[ $installmentCount - 1 ]->id);
+					$ids = array('contribution' => $ContributionDetails[ $installmentCount - 1 ]->id);					
 					
-					//$updatecontribution = CRM_Contribute_BAO_Contribution::add($contributionPrms,$ids);
-					$updatecontribution =& civicrm_contribution_add($contributionPrms);	
+
+					$updatecontribution = civicrm_api3('contribution', 'create', $contributionPrms);
+					
 					if ( !$updatecontribution['is_error'] ) {
 						$info .= "Object - Recurring Contribution, Id - ".$updatecontribution['id'].", Action - Updated \n ";
 						$successfulTrxns++;
 						
 						// Obtaining contribution obj of the updated contribution record
-						$params = array( 'contribution_id' => $updatecontribution['id'] );
-						require_once "CRM/Contribute/BAO/Contribution.php";
-						$values = array();
-						$ids    = array();
-						//$newContributionDetails = CRM_Contribute_BAO_Contribution::getValues($params, $values, $ids);
-						$newContributionDetails =& civicrm_contribution_get($params);
+
+
+
+
+
+
+						$newContributionDetails       = $updatecontribution['values'][$updatecontribution['id']];
+						$newContributionDetails['id'] = $updatecontribution['id'];
+						
 						if( !$newContributionDetails['is_error'] ) {
 							$newContributionDetails['id'] = $newContributionDetails['contribution_id'];			
 							//Send notification to user for new record
@@ -214,11 +215,12 @@ class bin_vancoHistory {
 												 'check_number'           => $ContributionDetails[ $installmentCount - 1 ]->check_number
 												 );
 					
-					$newContributionDetails =& civicrm_contribution_add($contributionParams);
+					$newcontribution = civicrm_api3('contribution', 'create', $contributionParams);
 					
 					//Add an entry to Financial transaction table
 					//for successful transaction
-					if ( !$newContributionDetails['is_error'] ) {	
+					if ( !$newcontribution['is_error'] ) {	
+						$newContributionDetails = $newcontribution['values'][$newcontribution['id']];
 						$info  .= "Object - Recurring Contribution, Id - ".$newContributionDetails['id'].", Action - Created  \n";
 						$successfulTrxns++;	
 					
@@ -233,17 +235,17 @@ class bin_vancoHistory {
 					
 				} 
 				if ( !$newContributionDetails['is_error'] ) {						
-					//Updating custom settlement date field
-					$sdate = $value['SETTLEMENTDATE'];
-					$isupdate = $this->updateCustomField( $newContributionDetails['id'], $sdate );
-					
-					//***************					
-				
-				//Update the status and end date of the recur contribution is its the last installment
+
+
+
+
+
+
+					//Update the status and end date of the recur contribution is its the last installment
 					if ( $installmentCount >= $totalInstallments ) {
-						$contributionRecurParams = array( 'id' => $data[0]['id'],
+						$contributionRecurParams = array( 'id'                     => $data[0]['id'],
 														  'contribution_status_id' => 1,
-													      'end_date' => $trxn_date
+													      'end_date'               => $trxn_date
 														  );
 						$id = array ( 'contribution' => $data[0]['id'] );
 						require_once 'CRM/Contribute/BAO/ContributionRecur.php'; 
@@ -290,7 +292,9 @@ class bin_vancoHistory {
 
 						$ids['contribution'] = $contributionParams['id'];
 
-						$newContributionDetails =& civicrm_contribution_add($contributionParams);
+						$updatecontribution = civicrm_api3('contribution', 'create', $contributionParams);
+						$newContributionDetails = $updatecontribution['values'][$updatecontribution['id']];
+						
 						if ( $newContributionDetails ) {
 							$info  .= "Object - One time Contribution, Id - ".$newContributionDetails['id'].", Action - Updated \n";
 							$successfulTrxns++;		

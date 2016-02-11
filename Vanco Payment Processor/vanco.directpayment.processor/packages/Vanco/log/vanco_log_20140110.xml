@@ -1,0 +1,30 @@
+-----------------Request START--------------
+Request Time: 10-01-14 05:12:03
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>Login</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-10 17:01:03</RequestTime>
+	
+    <Version>2</Version>
+  </Auth>
+  <Request>
+	
+    <RequestVars>
+		
+      <UserID>BACKOFFI</UserID>
+	
+      <Password>test1234</Password>
+	
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 10-01-14 05:12:04
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-10 17:01:03</RequestTime><RequestType>Login</RequestType><Version>2</Version></Auth><Response><Errors><Error><ErrorCode>378</ErrorCode><ErrorDescription>Invalid Login Key</ErrorDescription></Error></Errors></Response></VancoWS>
+
+-----------------Response END--------------

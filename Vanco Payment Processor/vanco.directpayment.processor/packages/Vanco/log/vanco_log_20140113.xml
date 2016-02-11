@@ -1,0 +1,630 @@
+-----------------Request START--------------
+Request Time: 13-01-14 02:07:02
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>Login</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 14:01:02</RequestTime>
+	
+    <Version>2</Version>
+  </Auth>
+  <Request>
+	
+    <RequestVars>
+		
+      <UserID>BACKOFFI</UserID>
+	
+      <Password>v@nco2oo</Password>
+	
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 02:07:02
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 14:01:02</RequestTime><RequestType>Login</RequestType><Version>2</Version></Auth><Response><SessionID>4641e2d9c54c9ebfdc3fc82fa7e694ee5110e2cb</SessionID></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 02:07:02
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>EFTAddCompleteTransaction</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 14:01:02</RequestTime>
+    <SessionID>4641e2d9c54c9ebfdc3fc82fa7e694ee5110e2cb</SessionID>
+    <Version>2</Version>
+  </Auth>
+  <Request>
+    <RequestVars>
+		<CustomerID>202</CustomerID>		
+		<CustomerName>hghg, jhgj</CustomerName>
+		<CustomerAddress1>hh</CustomerAddress1>
+		<CustomerAddress2/>
+		<CustomerCity>hghghggh</CustomerCity>
+		<CustomerState>AK</CustomerState>
+		<CustomerZip>3623232</CustomerZip>
+		<CustomerPhone/>
+		<PaymentMethodRef/>
+		<AccountType>CC</AccountType>
+		<AccountNumber>************1111</AccountNumber>
+		<CardCVV2></CardCVV2>
+		<CardBillingName>jhgj hghhgh hghg</CardBillingName>
+		<CardExpMonth>03</CardExpMonth>
+		<CardExpYear>2016</CardExpYear>
+		<SameCCBillingAddrAsCust>YES</SameCCBillingAddrAsCust>
+		<CardBillingAddr1/>
+		<CardBillingAddr2/>
+		<CardBillingCity/>
+		<CardBillingState/>
+		<CardBillingZip/>
+		<Amount>15.00</Amount>
+		<StartDate>0000-00-00</StartDate>
+		<EndDate/>
+		<FrequencyCode>O</FrequencyCode>
+		<TransactionTypeCode/>
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 02:07:05
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 14:01:02</RequestTime><RequestType>EFTAddCompleteTransaction</RequestType><Signature/><SessionID>4641e2d9c54c9ebfdc3fc82fa7e694ee5110e2cb</SessionID><Version>2</Version></Auth><Response><StartDate>2014-01-13</StartDate><CustomerRef>7411729</CustomerRef><PaymentMethodRef>7452851</PaymentMethodRef><TransactionRef>16099338</TransactionRef><TransactionFee>0.86</TransactionFee></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 02:07:05
+Request: <?xml version="1.0"?>
+<VancoWS>
+	<Auth>
+		<RequestType>Logout</RequestType>
+		<RequestID>RequestID</RequestID>
+		<RequestTime>2014-01-13 14:01:05</RequestTime>
+		<SessionID>4641e2d9c54c9ebfdc3fc82fa7e694ee5110e2cb</SessionID>
+		<Version>2</Version>
+	</Auth>
+	<Request>
+		<RequestVars>
+			<Logout/>
+		</RequestVars>
+	</Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 02:07:05
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 14:01:05</RequestTime><RequestType>Logout</RequestType><Version>2</Version></Auth><Response><Logout>Successful</Logout></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 02:15:10
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>Login</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 14:01:10</RequestTime>
+	
+    <Version>2</Version>
+  </Auth>
+  <Request>
+	
+    <RequestVars>
+		
+      <UserID>BACKOFFI</UserID>
+	
+      <Password>v@nco2oo</Password>
+	
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 02:15:11
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 14:01:10</RequestTime><RequestType>Login</RequestType><Version>2</Version></Auth><Response><SessionID>73a3a3442b8ea7992b316cdcf15da3a7de0e734e</SessionID></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 02:15:11
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>EFTAddCompleteTransaction</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 14:01:11</RequestTime>
+    <SessionID>73a3a3442b8ea7992b316cdcf15da3a7de0e734e</SessionID>
+    <Version>2</Version>
+  </Auth>
+  <Request>
+    <RequestVars>
+		<CustomerID>202</CustomerID>		
+		<CustomerName>hghg, jhgj</CustomerName>
+		<CustomerAddress1>hh</CustomerAddress1>
+		<CustomerAddress2/>
+		<CustomerCity>hghghggh</CustomerCity>
+		<CustomerState>AK</CustomerState>
+		<CustomerZip>3623232</CustomerZip>
+		<CustomerPhone/>
+		<PaymentMethodRef/>
+		<AccountType>CC</AccountType>
+		<AccountNumber>************1111</AccountNumber>
+		<CardCVV2></CardCVV2>
+		<CardBillingName>jhgj hghhgh hghg</CardBillingName>
+		<CardExpMonth>03</CardExpMonth>
+		<CardExpYear>2016</CardExpYear>
+		<SameCCBillingAddrAsCust>YES</SameCCBillingAddrAsCust>
+		<CardBillingAddr1/>
+		<CardBillingAddr2/>
+		<CardBillingCity/>
+		<CardBillingState/>
+		<CardBillingZip/>
+		<Amount>15.00</Amount>
+		<StartDate>0000-00-00</StartDate>
+		<EndDate/>
+		<FrequencyCode>O</FrequencyCode>
+		<TransactionTypeCode/>
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 02:15:12
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 14:01:11</RequestTime><RequestType>EFTAddCompleteTransaction</RequestType><Signature/><SessionID>73a3a3442b8ea7992b316cdcf15da3a7de0e734e</SessionID><Version>2</Version></Auth><Response><Errors><Error><ErrorCode>434</ErrorCode><ErrorDescription>Duplicate Transaction</ErrorDescription></Error></Errors></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 02:17:11
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>Login</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 14:01:11</RequestTime>
+	
+    <Version>2</Version>
+  </Auth>
+  <Request>
+	
+    <RequestVars>
+		
+      <UserID>BACKOFFI</UserID>
+	
+      <Password>v@nco2oo</Password>
+	
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 02:17:11
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 14:01:11</RequestTime><RequestType>Login</RequestType><Version>2</Version></Auth><Response><SessionID>a131a7c5c740c818b7d9e5d3ff6402623c4223b6</SessionID></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 02:17:11
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>EFTAddCompleteTransaction</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 14:01:11</RequestTime>
+    <SessionID>a131a7c5c740c818b7d9e5d3ff6402623c4223b6</SessionID>
+    <Version>2</Version>
+  </Auth>
+  <Request>
+    <RequestVars>
+		<CustomerID>202</CustomerID>		
+		<CustomerName>hghg, jhgj</CustomerName>
+		<CustomerAddress1>hh</CustomerAddress1>
+		<CustomerAddress2/>
+		<CustomerCity>hghghggh</CustomerCity>
+		<CustomerState>AK</CustomerState>
+		<CustomerZip>3623232</CustomerZip>
+		<CustomerPhone/>
+		<PaymentMethodRef/>
+		<AccountType>CC</AccountType>
+		<AccountNumber>************1111</AccountNumber>
+		<CardCVV2></CardCVV2>
+		<CardBillingName>jhgj hghhgh hghg</CardBillingName>
+		<CardExpMonth>03</CardExpMonth>
+		<CardExpYear>2016</CardExpYear>
+		<SameCCBillingAddrAsCust>YES</SameCCBillingAddrAsCust>
+		<CardBillingAddr1/>
+		<CardBillingAddr2/>
+		<CardBillingCity/>
+		<CardBillingState/>
+		<CardBillingZip/>
+		<Amount>12.00</Amount>
+		<StartDate>0000-00-00</StartDate>
+		<EndDate/>
+		<FrequencyCode>O</FrequencyCode>
+		<TransactionTypeCode/>
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 02:17:16
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 14:01:11</RequestTime><RequestType>EFTAddCompleteTransaction</RequestType><Signature/><SessionID>a131a7c5c740c818b7d9e5d3ff6402623c4223b6</SessionID><Version>2</Version></Auth><Response><StartDate>2014-01-13</StartDate><CustomerRef>7411729</CustomerRef><PaymentMethodRef>7452851</PaymentMethodRef><TransactionRef>16099342</TransactionRef><TransactionFee>0.78</TransactionFee></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 02:17:16
+Request: <?xml version="1.0"?>
+<VancoWS>
+	<Auth>
+		<RequestType>Logout</RequestType>
+		<RequestID>RequestID</RequestID>
+		<RequestTime>2014-01-13 14:01:16</RequestTime>
+		<SessionID>a131a7c5c740c818b7d9e5d3ff6402623c4223b6</SessionID>
+		<Version>2</Version>
+	</Auth>
+	<Request>
+		<RequestVars>
+			<Logout/>
+		</RequestVars>
+	</Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 02:17:16
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 14:01:16</RequestTime><RequestType>Logout</RequestType><Version>2</Version></Auth><Response><Logout>Successful</Logout></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 03:43:35
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>Login</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 15:01:35</RequestTime>
+	
+    <Version>2</Version>
+  </Auth>
+  <Request>
+	
+    <RequestVars>
+		
+      <UserID>BACKOFFI</UserID>
+	
+      <Password>v@nco2oo</Password>
+	
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 03:43:36
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 15:01:35</RequestTime><RequestType>Login</RequestType><Version>2</Version></Auth><Response><SessionID>9320c0b1d59ad6c9aad48ed9424b3825cebeea72</SessionID></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 03:43:36
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>EFTAddCompleteTransaction</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 15:01:36</RequestTime>
+    <SessionID>9320c0b1d59ad6c9aad48ed9424b3825cebeea72</SessionID>
+    <Version>2</Version>
+  </Auth>
+  <Request>
+    <RequestVars>
+		<CustomerID>202</CustomerID>		
+		<CustomerName>hghg, jhgj</CustomerName>
+		<CustomerAddress1>hh</CustomerAddress1>
+		<CustomerAddress2/>
+		<CustomerCity>hghghggh</CustomerCity>
+		<CustomerState>AK</CustomerState>
+		<CustomerZip>3623232</CustomerZip>
+		<CustomerPhone/>
+		<PaymentMethodRef/>
+		<AccountType>C</AccountType>
+		<AccountNumber>****5554</AccountNumber>
+		<CardCVV2></CardCVV2>
+		<CardBillingName/>
+		<CardExpMonth/>
+		<CardExpYear/>
+		<SameCCBillingAddrAsCust/>
+		<CardBillingAddr1/>
+		<CardBillingAddr2/>
+		<CardBillingCity/>
+		<CardBillingState/>
+		<CardBillingZip/>
+		<Amount>10.00</Amount>
+		<StartDate>0000-00-00</StartDate>
+		<EndDate/>
+		<FrequencyCode>O</FrequencyCode>
+		<TransactionTypeCode>WEB</TransactionTypeCode>
+    <RoutingNumber>031207607</RoutingNumber></RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 03:43:36
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 15:01:36</RequestTime><RequestType>EFTAddCompleteTransaction</RequestType><Signature/><SessionID>9320c0b1d59ad6c9aad48ed9424b3825cebeea72</SessionID><Version>2</Version></Auth><Response><StartDate>2014-01-15</StartDate><CustomerRef>7411729</CustomerRef><PaymentMethodRef>7455552</PaymentMethodRef><TransactionRef>16099347</TransactionRef><TransactionFee/></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 03:43:36
+Request: <?xml version="1.0"?>
+<VancoWS>
+	<Auth>
+		<RequestType>Logout</RequestType>
+		<RequestID>RequestID</RequestID>
+		<RequestTime>2014-01-13 15:01:36</RequestTime>
+		<SessionID>9320c0b1d59ad6c9aad48ed9424b3825cebeea72</SessionID>
+		<Version>2</Version>
+	</Auth>
+	<Request>
+		<RequestVars>
+			<Logout/>
+		</RequestVars>
+	</Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 03:43:37
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 15:01:36</RequestTime><RequestType>Logout</RequestType><Version>2</Version></Auth><Response><Logout>Successful</Logout></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 03:45:07
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>Login</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 15:01:07</RequestTime>
+	
+    <Version>2</Version>
+  </Auth>
+  <Request>
+	
+    <RequestVars>
+		
+      <UserID>BACKOFFI</UserID>
+	
+      <Password>v@nco2oo</Password>
+	
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 03:45:07
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 15:01:07</RequestTime><RequestType>Login</RequestType><Version>2</Version></Auth><Response><SessionID>c7c275caaa46522d769d884999995dc68a2b0899</SessionID></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 03:45:07
+Request: <?xml version="1.0"?>
+<VancoWS>
+	<Auth>
+		<RequestType>FederalHoliday</RequestType>
+		<RequestID>RequestID</RequestID>
+		<RequestTime>2014-01-13 15:01:07</RequestTime>
+		<SessionID>c7c275caaa46522d769d884999995dc68a2b0899</SessionID>
+		<Version>2</Version>
+	</Auth>
+	<Request>
+		<RequestVars>
+			<ClientID/>
+		</RequestVars>
+	</Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 03:45:08
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 15:01:07</RequestTime><RequestType>FederalHoliday</RequestType><Signature/><SessionID>c7c275caaa46522d769d884999995dc68a2b0899</SessionID><Version>2</Version></Auth><Response/></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 03:45:08
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>EFTAddCompleteTransaction</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 15:01:08</RequestTime>
+    <SessionID>c7c275caaa46522d769d884999995dc68a2b0899</SessionID>
+    <Version>2</Version>
+  </Auth>
+  <Request>
+    <RequestVars>
+		<CustomerID>202</CustomerID>		
+		<CustomerName>hghg, jhgj</CustomerName>
+		<CustomerAddress1>hh</CustomerAddress1>
+		<CustomerAddress2/>
+		<CustomerCity>hghghggh</CustomerCity>
+		<CustomerState>AK</CustomerState>
+		<CustomerZip>3623232</CustomerZip>
+		<CustomerPhone/>
+		<PaymentMethodRef/>
+		<AccountType>CC</AccountType>
+		<AccountNumber>************1111</AccountNumber>
+		<CardCVV2></CardCVV2>
+		<CardBillingName>jhgj hghhgh hghg</CardBillingName>
+		<CardExpMonth>03</CardExpMonth>
+		<CardExpYear>2017</CardExpYear>
+		<SameCCBillingAddrAsCust>YES</SameCCBillingAddrAsCust>
+		<CardBillingAddr1/>
+		<CardBillingAddr2/>
+		<CardBillingCity/>
+		<CardBillingState/>
+		<CardBillingZip/>
+		<Amount>41.00</Amount>
+		<StartDate>2014-01-13</StartDate>
+		<EndDate/>
+		<FrequencyCode>W</FrequencyCode>
+		<TransactionTypeCode/>
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 03:45:08
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 15:01:08</RequestTime><RequestType>EFTAddCompleteTransaction</RequestType><Signature/><SessionID>c7c275caaa46522d769d884999995dc68a2b0899</SessionID><Version>2</Version></Auth><Response><CustomerRef>7411729</CustomerRef><PaymentMethodRef>7452851</PaymentMethodRef><TransactionRef>16099348</TransactionRef><TransactionFee>1.58</TransactionFee></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 03:45:08
+Request: <?xml version="1.0"?>
+<VancoWS>
+	<Auth>
+		<RequestType>Logout</RequestType>
+		<RequestID>RequestID</RequestID>
+		<RequestTime>2014-01-13 15:01:08</RequestTime>
+		<SessionID>c7c275caaa46522d769d884999995dc68a2b0899</SessionID>
+		<Version>2</Version>
+	</Auth>
+	<Request>
+		<RequestVars>
+			<Logout/>
+		</RequestVars>
+	</Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 03:45:09
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 15:01:08</RequestTime><RequestType>Logout</RequestType><Version>2</Version></Auth><Response><Logout>Successful</Logout></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 03:52:30
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>Login</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 15:01:30</RequestTime>
+	
+    <Version>2</Version>
+  </Auth>
+  <Request>
+	
+    <RequestVars>
+		
+      <UserID>BACKOFFI</UserID>
+	
+      <Password>v@nco2oo</Password>
+	
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 03:52:30
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 15:01:30</RequestTime><RequestType>Login</RequestType><Version>2</Version></Auth><Response><SessionID>beb8edd45c4303828796acc0ed20f144e38597a7</SessionID></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 03:52:30
+Request: <?xml version="1.0"?>
+<VancoWS>
+  <Auth>
+    <RequestType>EFTAddCompleteTransaction</RequestType>
+    <RequestID>RequestID</RequestID>
+    <RequestTime>2014-01-13 15:01:30</RequestTime>
+    <SessionID>beb8edd45c4303828796acc0ed20f144e38597a7</SessionID>
+    <Version>2</Version>
+  </Auth>
+  <Request>
+    <RequestVars>
+		<CustomerID>202</CustomerID>		
+		<CustomerName>hghg, jhgj</CustomerName>
+		<CustomerAddress1>hh</CustomerAddress1>
+		<CustomerAddress2/>
+		<CustomerCity>hghghggh</CustomerCity>
+		<CustomerState>AK</CustomerState>
+		<CustomerZip>3623232</CustomerZip>
+		<CustomerPhone/>
+		<PaymentMethodRef/>
+		<AccountType>CC</AccountType>
+		<AccountNumber>************1111</AccountNumber>
+		<CardCVV2></CardCVV2>
+		<CardBillingName>jhgj hghhgh hghg</CardBillingName>
+		<CardExpMonth>02</CardExpMonth>
+		<CardExpYear>2016</CardExpYear>
+		<SameCCBillingAddrAsCust>YES</SameCCBillingAddrAsCust>
+		<CardBillingAddr1/>
+		<CardBillingAddr2/>
+		<CardBillingCity/>
+		<CardBillingState/>
+		<CardBillingZip/>
+		<Amount>65.00</Amount>
+		<StartDate>0000-00-00</StartDate>
+		<EndDate/>
+		<FrequencyCode>O</FrequencyCode>
+		<TransactionTypeCode/>
+    </RequestVars>
+  </Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 03:52:35
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 15:01:30</RequestTime><RequestType>EFTAddCompleteTransaction</RequestType><Signature/><SessionID>beb8edd45c4303828796acc0ed20f144e38597a7</SessionID><Version>2</Version></Auth><Response><StartDate>2014-01-13</StartDate><CustomerRef>7411729</CustomerRef><PaymentMethodRef>7452851</PaymentMethodRef><TransactionRef>16099349</TransactionRef><TransactionFee>2.24</TransactionFee></Response></VancoWS>
+
+-----------------Response END--------------
+-----------------Request START--------------
+Request Time: 13-01-14 03:52:35
+Request: <?xml version="1.0"?>
+<VancoWS>
+	<Auth>
+		<RequestType>Logout</RequestType>
+		<RequestID>RequestID</RequestID>
+		<RequestTime>2014-01-13 15:01:35</RequestTime>
+		<SessionID>beb8edd45c4303828796acc0ed20f144e38597a7</SessionID>
+		<Version>2</Version>
+	</Auth>
+	<Request>
+		<RequestVars>
+			<Logout/>
+		</RequestVars>
+	</Request>
+</VancoWS>
+
+-----------------Request END--------------
+-----------------Response START--------------
+Response Time: 13-01-14 03:52:35
+Response: <?xml version="1.0" encoding="UTF-8"?>
+<VancoWS><Auth><RequestID>RequestID</RequestID><RequestTime>2014-01-13 15:01:35</RequestTime><RequestType>Logout</RequestType><Version>2</Version></Auth><Response><Logout>Successful</Logout></Response></VancoWS>
+
+-----------------Response END--------------

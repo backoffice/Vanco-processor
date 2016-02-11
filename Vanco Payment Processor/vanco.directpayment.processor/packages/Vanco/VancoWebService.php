@@ -63,7 +63,7 @@ class VancoPaymentService
 		} else 
 		{ 
 			$ReqHeader  = "POST ". $this->target ." HTTP/1.1\n"; 
-			$ReqHeader .= "Host: " . $_SERVER['HTTP_HOST'] . "\n"; 
+			$ReqHeader .= "Host: " . $this->_host . "\n"; //Modified by BOT - 20th Nov, 2015 - To fix unable to login to dev environment issue
 			$ReqHeader .= "User-Agent: " . $_SERVER['HTTP_USER_AGENT'] . "\n"; 
 			$ReqHeader .= "Content-Type: application/x-www-form-urlencoded\n"; 
 			$ReqHeader .= "Content-length: " . strlen($xml) . "\n"; 

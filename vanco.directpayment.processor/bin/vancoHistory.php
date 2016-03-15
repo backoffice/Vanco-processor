@@ -18,15 +18,16 @@ class bin_vancoHistory {
 		$customExt = $config->extensionsDir;			
 		$customExt = rtrim( $customExt,"/");
 		$this->_customExt = $customExt;
-		
-		require_once "$customExt/vanco.directpayment.processor/Vanco.php";
+		require_once "$customExt/vanco.directpayment.processor/vanco.php";
 					
         if( !$this->_date ) {
             $this->_date = date('Y-m-d');
         }
         //get raw xml
         $xml = file_get_contents('php://input');   
-
+		//Sample POST
+		//$xml =  "<VancoWS><Auth><PostType>EFTTransactionActivity</PostType><PostTime>2013-03-29 10:38:16</PostTime><Version>3</Version></Auth><ClientID>UM6447-350</ClientID><EventCount>1</EventCount><Events><Event><EventType>CCSuccess</EventType><CustomerRef>7398760</CustomerRef><PaymentMethodRef>7446184</PaymentMethodRef><TransactionRef>16156197</TransactionRef><Frequencycode>W</Frequencycode><ProcessDate>2013-03-29</ProcessDate><SettlementDate>2016-02-25</SettlementDate><DepositDate></DepositDate><CCAuthDesc>Declined</CCAuthDesc><Amount>10.01</Amount><Credit>D</Credit></Event></Events></VancoWS>";
+		
 		$this->log('Notification', $xml);
         $trxnData = $this->parseXML( $xml );
                 
@@ -38,7 +39,7 @@ class bin_vancoHistory {
 
 	function log($type,$xml,$fileName = null) {
         require_once 'CRM/Core/DAO.php';
-        $fileName  = $this->_customExt."/vanco.directpayment.processor/packages/Vanco/log/trxn_log_";
+        $fileName  = $this->_customExt."/vanco.directpayment.processor/log/trxn_log_";
         
         $xmlObject = simplexml_load_string( $xml );
         
@@ -98,8 +99,8 @@ class bin_vancoHistory {
 			
 			$customExt = rtrim( $customExt,"/");
 			
-			require_once "$customExt/vanco.directpayment.processor/Vanco.php";
-			$data = vanco_directpayment_processor::getRecurPaymentDetails( $select, array( 'trxn_id' => $trxnRef ));
+			require_once "$customExt/vanco.directpayment.processor/vanco.php";
+			$data = $this->getRecurPaymentDetails( $select, array( 'trxn_id' => $trxnRef ));
 
 			if( is_array( $data ) ) {							
 				//******************
@@ -107,7 +108,7 @@ class bin_vancoHistory {
 				$totalInstallments = $data[0]['installments'];
 				$values = array( );
 				$ids = array( );
-				$ContributionDetails = vanco_directpayment_processor::getPaymentDetails( NULL, $contributionParams );
+				$ContributionDetails = $this->getPaymentDetails( NULL, $contributionParams );
 
 				$installmentCount = $ContributionDetails[0]->N;
 				$contact_id       = $ContributionDetails[0]->contact_id;                        
@@ -149,11 +150,6 @@ class bin_vancoHistory {
 						$successfulTrxns++;
 						
 						// Obtaining contribution obj of the updated contribution record
-
-
-
-
-
 
 						$newContributionDetails       = $updatecontribution['values'][$updatecontribution['id']];
 						$newContributionDetails['id'] = $updatecontribution['id'];
@@ -234,13 +230,7 @@ class bin_vancoHistory {
 					}
 					
 				} 
-				if ( !$newContributionDetails['is_error'] ) {						
-
-
-
-
-
-
+				if ( !$newContributionDetails['is_error'] ) {
 					//Update the status and end date of the recur contribution is its the last installment
 					if ( $installmentCount >= $totalInstallments ) {
 						$contributionRecurParams = array( 'id'                     => $data[0]['id'],
@@ -268,7 +258,7 @@ class bin_vancoHistory {
 					break;
 				}
 
-				$ContributionDetails = vanco_directpayment_processor::getPaymentDetails( NULL, $contributionParams );
+				$ContributionDetails = $this->getPaymentDetails( NULL, $contributionParams );
 
 				if ( $ContributionDetails ) {
 					$installmentCount = $ContributionDetails[0]->N;
@@ -283,11 +273,9 @@ class bin_vancoHistory {
 						$currentDate = date('Y-m-d');
 
 						if ( $status == 1 && $value['SETTLEMENTDATE'] < $currentDate ) {
-							$sdate    = $value['SETTLEMENTDATE'];
-							$iscustom = $this->updateCustomField( $ContributionDetails[ $installmentCount - 1 ]->id, $sdate );
-							if ( !$iscustom ) {
-								$contributionParams['receive_date'] = $value['SETTLEMENTDATE'];
-							}
+							$sdate    = $value['SETTLEMENTDATE'];							
+							$contributionParams['receive_date'] = $value['SETTLEMENTDATE'];
+							
 						}
 
 						$ids['contribution'] = $contributionParams['id'];
@@ -326,41 +314,6 @@ class bin_vancoHistory {
         return $result;
     }
     
-    function updateCustomField( $cid, $date) {
-        $customGroupName = 'Vanco_Settlement_Date';
-        $cgID = CRM_Core_DAO::getFieldValue( "CRM_Core_DAO_CustomGroup", $customGroupName, 'id', 'name' );
-
-        require_once 'api/v2/Contribution.php';
-        require_once 'CRM/Core/BAO/CustomGroup.php';
-        require_once 'CRM/Core/BAO/CustomValueTable.php';
-        $groupTree =& CRM_Core_BAO_CustomGroup::getTree( 'Contribution',
-                                                         $this,
-                                                         $relId,
-                                                         $cgID,
-                                                         $relationTypeId, null );
-        $form = null;
-        $groupTree = CRM_Core_BAO_CustomGroup::formatGroupTree( $groupTree, 1, $form);
-        $params = array();
-
-        foreach ( $groupTree as $gID => $gVal ) {
-            foreach ( $gVal['fields'] as $fID => $fVal ) {
-                $name = explode('_', $fVal['column_name']);
-                if ( $name[0].'_'.$name[1] == 'settlement_date' ) {
-                    $params[$fVal['element_name']] = $date;
-                }
-            }
-        }
-        if ( $params ) {
-            $params['custom'] = CRM_Core_BAO_CustomField::postProcess( $params,
-                                                                       $customFields,
-                                                                       $cid,
-                                                                       'Contribution' );
-
-            CRM_Core_BAO_CustomValueTable::store( $params['custom'], 'civicrm_contribution', $cid );
-            return true;
-        }
-    }
-
  function createFinancialTrxn( $contribution ) {
         require_once 'CRM/Core/DAO.php';
         $date      = explode('-', $contribution->receive_date);
@@ -420,6 +373,58 @@ class bin_vancoHistory {
         }
     }
 	
+	function getRecurPaymentDetails( $recurSelectParam, $recurWhereParam ) { 
+		$selectParams = implode( ',', $recurSelectParam );
+		$whereParams = "";
+		foreach( $recurWhereParam as $whereKey => $whereValue ) {
+			$whereParamsArray[] = $whereKey . " = '" . $whereValue ."'";
+		}
+		$whereParams = implode( ' AND ', $whereParamsArray );
+		$sql = "SELECT " . $selectParams ." FROM civicrm_contribution_recur where " . $whereParams .";" ;
+		$recurDetails =& CRM_Core_DAO::executeQuery( $sql );
+		$index = 0;
+		while( $recurDetails->fetch() ){
+			foreach( $recurSelectParam as $selectKey ) {
+				$details[$index][$selectKey] = $recurDetails->$selectKey;
+			}
+			$index++;
+		}
+		return $details;
+	}
+
+	function getPaymentDetails( $SelectParam, $WhereParam, $like = FALSE ) { 
+		if( $SelectParam ){
+			$selectParams = implode( ',', $SelectParam );
+		} else {
+			$selectParams = '*';
+		}
+		$whereParams = "";
+		if( $like ){
+			$operator = ' like ';
+		} else {
+			$operator = ' = ';
+		}
+		foreach( $WhereParam as $whereKey => $whereValue ) {
+			$whereParamsArray[] = $whereKey . $operator."'" . $whereValue ."'";
+		}
+		$whereParams = implode( ' AND ', $whereParamsArray );
+		$sql = "SELECT DISTINCT " . $selectParams ." FROM civicrm_contribution where " . $whereParams .";" ;
+		$Details =& CRM_Core_DAO::executeQuery( $sql );
+		$index = 0;
+		$details = array();
+		while( $Details->fetch() ){
+			if( $SelectParam ){
+				foreach( $SelectParam as $selectKey ) {
+					$details[$index][$selectKey] = $Details->$selectKey;
+				}
+			} else {
+				$details[$index] = clone $Details;
+			}
+			$index++;
+		}
+		return $details;
+	}  
+	
 	
   /**
    * Function to send the emails for Recurring Contribution Notication
@@ -465,7 +470,7 @@ class bin_vancoHistory {
         $receiptFromName  = $domainValues[0];
         $receiptFromEmail = $domainValues[1];
       }
-	   $contributionType = CRM_Core_DAO::getFieldValue('CRM_Contribute_DAO_ContributionType', $recur->financial_type_id, 'name');
+	   $contributionType = CRM_Core_DAO::getFieldValue('CRM_Contribute_DAO_FinancialType', $recur->financial_type_id, 'name');
 	   $address  = CRM_Core_BAO_Address::allAddress( $contactID );
 	   foreach( $address as $k => $v ) {
 			$buildAddress = '';
